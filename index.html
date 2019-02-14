@@ -5,6 +5,7 @@
       #game {
         position: relative;
         margin: 0 auto;
+        overflow: hidden;
       }
       #game img {
         position: absolute;
@@ -12,117 +13,7 @@
       }
     </style>
     <script src="./js/jquery.js"></script>
-    <script>
-      $(() => {
-        const RENDER_SCALE = 3
-        const SHOOT_KEY = 32
-        const LEFT_KEY = 37
-        const RIGHT_KEY = 39
-
-        // Get the <div> we'll be putting all of our elements into
-        const $game = $('#game').css({
-          width: 217 * RENDER_SCALE,
-          height: 248 * RENDER_SCALE
-        })
-
-        // Create the background
-        const $bg = $('<img>')
-          .attr({
-            src: './img/bg.png',
-            width: 217 * RENDER_SCALE,
-            height: 248 * RENDER_SCALE
-          })
-          .appendTo($game)
-
-        // Create a ship
-        const $ship = $('<img>')
-          .data({
-            x: 100,
-            y: 208
-          })
-          .attr({
-            src: './img/ship.png',
-            width: 13 * RENDER_SCALE,
-            height: 8 * RENDER_SCALE
-          })
-          .appendTo($game)
-        
-        // Create an array for lasers
-        const $lasers = []
-
-        // Create the invaders
-        const $invaders = []
-        const createInvaderRow = (row, src) => {
-          for (let col = 0; col < 11; col++) {
-            $invaders.push($('<img>')
-              .attr({
-                src: src,
-                width: 16 * RENDER_SCALE,
-                height: 8 * RENDER_SCALE
-              })
-              .css({
-                'left': (20 + 16 * col) * RENDER_SCALE,
-                'top': (54 + 16 * row) * RENDER_SCALE
-              })
-              .appendTo($game))
-          }
-        }
-        createInvaderRow(0, './img/invader-1.gif')
-        createInvaderRow(1, './img/invader-1.gif')
-        createInvaderRow(2, './img/invader-2.gif')
-        createInvaderRow(3, './img/invader-3.gif')
-        createInvaderRow(4, './img/invader-3.gif')
-
-        // Keep track of keypresses
-        const keys = {}
-        $('body').on('keyup keydown', evt => {
-          keys[evt.which] = (evt.type === 'keydown')
-
-          // Also shoot lasers on keypress
-          if (evt.type === 'keydown' && evt.which === SHOOT_KEY) {
-            $lasers.push($('<img>')
-              .data({
-                x: $ship.data('x') + 6,
-                y: $ship.data('y')
-              })
-              .attr({
-                src: './img/laser.png',
-                width: 1 * RENDER_SCALE,
-                height: 4 * RENDER_SCALE
-              })
-              .appendTo($game))
-          }
-        })
-
-        // Update the state of the game 30-60 times per second
-        const loop = () => {
-          // Update the ships position based on keypresses
-          $ship.data('x', $ship.data('x') + (keys[LEFT_KEY] ? -1 : 0) + (keys[RIGHT_KEY] ? 1 : 0))
-
-          // Redraw the ship at its new location
-          $ship.css({
-              'left': $ship.data('x') * RENDER_SCALE,
-              'top': $ship.data('y') * RENDER_SCALE
-            })
-
-          // Move the lasers
-          for (const $laser of $lasers) {
-            $laser.data('y', $laser.data('y') - 2)
-            // Redraw the laser at its new location
-            $laser.css({
-                'left': $laser.data('x') * RENDER_SCALE,
-                'top': $laser.data('y') * RENDER_SCALE
-              })
-          }
-
-          // Schedule the next update
-          window.requestAnimationFrame(loop)
-        }
-
-        // Kick off the game loop
-        window.requestAnimationFrame(loop)
-      })
-    </script>
+    <script src="./js/game.js"></script>
   </head>
   <body>
     <div id="game"></div>
