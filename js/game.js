@@ -9,7 +9,7 @@ $(() => {
     './img/invader-1.gif',
     './img/invader-2.gif',
     './img/invader-3.gif',
-    './img/invader-3.gif'
+    './img/invader-4.gif'
   ]
 
   // Get the <div> we'll be putting all of our elements into
